@@ -13,44 +13,6 @@ public class ProductRepositoryTest {
     Product smartphone2 = new Smartphone(5, "smartphone", 10_000, "A2", "Samsung");
     Product smartphone3 = new Smartphone(6, "smartphone", 20_000, "A3", "Redmi");
 
-    @Test
-    public void shouldFindAll() {
-        repository.save(book1);
-        repository.save(book2);
-        repository.save(book3);
-        repository.save(smartphone1);
-        repository.save(smartphone2);
-        repository.save(smartphone3);
-
-        Product[] expected = {book1, book2, book3, smartphone1, smartphone2, smartphone3};
-        Product[] actual = repository.findAll();
-        Assertions.assertArrayEquals(expected, actual);
-    }
-
-    @Test
-    public void shouldFindAllWithoutProducts() {
-        //repository.save(book1);
-        //repository.save(book2);
-        //repository.save(book3);
-        //repository.save(smartphone1);
-        //repository.save(smartphone2);
-        //repository.save(smartphone3);
-
-        Product[] expected = {};
-        Product[] actual = repository.findAll();
-        Assertions.assertArrayEquals(expected, actual);
-    }
-
-    @Test
-    public void shouldSave() {
-        repository.save(book3);
-        repository.save(smartphone1);
-
-        Product[] expected = {book3, smartphone1};
-        Product[] actual = repository.findAll();
-        Assertions.assertArrayEquals(expected, actual);
-
-    }
 
     @Test
     public void shouldRemoveByIdTwoProducts() {
@@ -82,6 +44,34 @@ public class ProductRepositoryTest {
         Product[] expected = {book2, book3, smartphone1, smartphone2, smartphone3};
         Product[] actual = repository.findAll();
         Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldNotFindId() {
+        repository.save(book1);
+        repository.save(book2);
+        repository.save(book3);
+        repository.save(smartphone1);
+        repository.save(smartphone2);
+        repository.save(smartphone3);
+
+        Assertions.assertThrows(NotFoundException.class, () -> {
+            repository.removeById(8);
+        });
+    }
+
+    @Test
+    public void shouldNotFindNegativeId() {
+        repository.save(book1);
+        repository.save(book2);
+        repository.save(book3);
+        repository.save(smartphone1);
+        repository.save(smartphone2);
+        repository.save(smartphone3);
+
+        Assertions.assertThrows(NotFoundException.class, () -> {
+            repository.removeById(-100);
+        });
     }
 
 
